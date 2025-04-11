@@ -85,7 +85,7 @@ Configure your LLM connection using environment variables. You can set these glo
 
 ## Example Langgraph Graph
 
-* ```mermaid
+```mermaid
 ---
 config:
   flowchart:
