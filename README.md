@@ -86,6 +86,12 @@ Configure your LLM connection using environment variables. You can set these glo
 ## Example Langgraph graph:
 
 ```mermaid
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
     __start__(("Start")):::startEndNode
     wp_check_is_english{"wp_check_is_english\n(Conditional)"}:::conditionalNode
     wp_llm_check_word_in_para{"wp_llm_check_word_in_para\n(LLM Decision)"}:::llmNode
