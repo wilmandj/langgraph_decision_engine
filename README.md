@@ -95,9 +95,9 @@ graph TD;
     %% Node Definitions (Simplified Syntax with <br/> and Abstraction)
     __start__("Start - Paragraph"):::startEndNode
     wp_check_is_english{"Is Para in English?<br/>(Conditional)"}:::conditionalNode
-    wp_check_word{"Keyword in Para?)<br/>:::unconditionalNode
-    wp_check_num{"Number in Para?)<br/>:::unconditionalNode
-    wp_check_word_or_num{"OR")<br/>:::conditionalNode
+    wp_check_word{"Keyword in Para?)"}:::unconditionalNode
+    wp_check_num{"Number in Para?)"}:::unconditionalNode
+    wp_check_word_or_num{"OR"}:::conditionalNode
     %% wp_check_word_or_num{"(KeyWord in Para?)<br/>OR<br/>(Number in Para?)"}:::conditionalNode
       %% Abstracted Node 1
     wp_check_final_condition{"[(KeyWord/Num) OR Is Para a Poem?]"}:::conditionalNode
