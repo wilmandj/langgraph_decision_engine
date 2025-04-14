@@ -105,27 +105,30 @@ graph TD;
     __end__("End"):::startEndNode
 
     %% Edges (Connections - Manually Rerouted for Abstraction)
-    __start__ --> wp_check_is_english;
+    __start__ --> wp_check_is_english
 
-    wp_error_handler_complex --> __end__;
-    wp_terminal_does_not_meet_condition --> __end__;
-    wp_terminal_meets_condition --> __end__;
+    wp_error_handler_complex --> __end__
+    wp_terminal_does_not_meet_condition --> __end__
+    wp_terminal_meets_condition --> __end__
 
     %% If English, fails condition
-    wp_check_is_english -- "yes" --> wp_terminal_does_not_meet_condition;
+    wp_check_is_english -- "yes" --> wp_terminal_does_not_meet_condition
     %% If not English, check the combined Word/Number condition
-    wp_check_is_english -- "no" --> wp_check_word_or_num;
-    wp_check_is_english -- "__error__" --> wp_error_handler_complex; %% Error from initial check
+    wp_check_is_english -- "no" --> wp_check_word_or_num
+    wp_check_is_english -- "__error__" --> wp_error_handler_complex
+      %% Error from initial check
 
     %% After checking Word OR Num, check the final combined condition (including Is Poem?)
-    wp_check_word_or_num -- "yes" --> wp_check_final_condition;
-    wp_check_word_or_num -- "no" --> wp_check_final_condition;
-    wp_check_word_or_num -- "__error__" --> wp_error_handler_complex; %% Represent potential errors from underlying checks
+    wp_check_word_or_num -- "yes" --> wp_check_final_condition
+    wp_check_word_or_num -- "no" --> wp_check_final_condition
+    wp_check_word_or_num -- "__error__" --> wp_error_handler_complex
+      %% Represent potential errors from underlying checks
 
     %% Route based on the final abstracted condition result
-    wp_check_final_condition -- "yes" --> wp_terminal_meets_condition;
-    wp_check_final_condition -- "no" --> wp_terminal_does_not_meet_condition;
-    wp_check_final_condition -- "__error__" --> wp_error_handler_complex; %% Represent potential errors from underlying checks
+    wp_check_final_condition -- "yes" --> wp_terminal_meets_condition
+    wp_check_final_condition -- "no" --> wp_terminal_does_not_meet_condition
+    wp_check_final_condition -- "__error__" --> wp_error_handler_complex
+      %% Represent potential errors from underlying checks
 
 
     %% Class Definitions (Styling - Kept the same)
@@ -138,7 +141,6 @@ graph TD;
     classDef errorNode fill:#f4cccc,stroke:#cc0000,stroke-width:2px;
     classDef unknownNode fill:#eee,stroke:#333,stroke-width:1px;
     classDef startEndNode fill:#555,stroke:#333,stroke-width:2px,color:#fff;
-
 ```
 
 ### Equivalent low level langgraph graph:
