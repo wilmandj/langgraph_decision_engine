@@ -154,7 +154,7 @@ config:
 graph TD;
     %% Node Definitions (Simplified Syntax with <br/> and Abstraction)
     __start__("Start - Paragraph"):::startEndNode
-    wp_check_is_english{"Is in English?<br/>(Conditional)"}:::conditionalNode
+    wp_check_is_english{"Is written in English?<br/>(Conditional)"}:::conditionalNode
     wp_check_word_or_num{"(KeyWord in Para?)<br/>OR<br/>(Number in Para?)"}:::conditionalNode
       %% Abstracted Node 1
     wp_check_final_condition{"[(Word/Num) OR Is Paragraph a Poem?]<br/>AND<br/>[Is NOT English]"}:::conditionalNode
