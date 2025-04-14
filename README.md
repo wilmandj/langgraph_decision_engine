@@ -95,8 +95,10 @@ graph TD;
     %% Node Definitions (Simplified Syntax with <br/> and Abstraction)
     __start__("Start"):::startEndNode
     wp_check_is_english{"Is English?<br/>(Conditional)"}:::conditionalNode
-    wp_check_word_or_num{"(Word in Para?)<br/>OR<br/>(Has Num?)"}:::conditionalNode %% Abstracted Node 1
-    wp_check_final_condition{"[(Word/Num) OR Poem?]<br/>AND<br/>[Is NOT English]"}:::conditionalNode %% Abstracted Node 2 (Represents final AND logic outcome)
+    wp_check_word_or_num{"(Word in Para?)<br/>OR<br/>(Has Num?)"}:::conditionalNode
+      %% Abstracted Node 1
+    wp_check_final_condition{"[(Word/Num) OR Poem?]<br/>AND<br/>[Is NOT English]"}:::conditionalNode
+      %% Abstracted Node 2 (Represents final AND logic outcome)
     wp_terminal_meets_condition("Meets Condition<br/>(Terminal)"):::terminalNode
     wp_terminal_does_not_meet_condition("Does NOT Meet Condition<br/>(Terminal)"):::terminalNode
     wp_error_handler_complex["Error Handler"]:::errorNode
@@ -109,23 +111,21 @@ graph TD;
     wp_terminal_does_not_meet_condition --> __end__;
     wp_terminal_meets_condition --> __end__;
 
-    % If English, fails condition
+    %% If English, fails condition
     wp_check_is_english -- "yes" --> wp_terminal_does_not_meet_condition;
-    % If not English, check the combined Word/Number condition
+    %% If not English, check the combined Word/Number condition
     wp_check_is_english -- "no" --> wp_check_word_or_num;
-    wp_check_is_english -- "__error__" --> wp_error_handler_complex; % Error from initial check
+    wp_check_is_english -- "__error__" --> wp_error_handler_complex; %% Error from initial check
 
-    % After checking Word OR Num, check the final combined condition (including Is Poem?)
+    %% After checking Word OR Num, check the final combined condition (including Is Poem?)
     wp_check_word_or_num -- "yes" --> wp_check_final_condition;
     wp_check_word_or_num -- "no" --> wp_check_final_condition;
-     % Represent potential errors from underlying checks leading to this abstracted node
-    wp_check_word_or_num -- "__error__" --> wp_error_handler_complex;
+    wp_check_word_or_num -- "__error__" --> wp_error_handler_complex; %% Represent potential errors from underlying checks
 
-    % Route based on the final abstracted condition result
+    %% Route based on the final abstracted condition result
     wp_check_final_condition -- "yes" --> wp_terminal_meets_condition;
     wp_check_final_condition -- "no" --> wp_terminal_does_not_meet_condition;
-     % Represent potential errors from underlying checks leading to this abstracted node
-    wp_check_final_condition -- "__error__" --> wp_error_handler_complex;
+    wp_check_final_condition -- "__error__" --> wp_error_handler_complex; %% Represent potential errors from underlying checks
 
 
     %% Class Definitions (Styling - Kept the same)
