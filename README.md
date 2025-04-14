@@ -95,7 +95,10 @@ graph TD;
     %% Node Definitions (Simplified Syntax with <br/> and Abstraction)
     __start__("Start - Paragraph"):::startEndNode
     wp_check_is_english{"Is Para in English?<br/>(Conditional)"}:::conditionalNode
-    wp_check_word_or_num{"(KeyWord in Para?)<br/>OR<br/>(Number in Para?)"}:::conditionalNode
+    wp_check_word{"Keyword in Para?)<br/>:::unconditionalNode
+    wp_check_num{"Number in Para?)<br/>:::unconditionalNode
+    wp_check_word_or_num{"OR")<br/>:::conditionalNode
+    %% wp_check_word_or_num{"(KeyWord in Para?)<br/>OR<br/>(Number in Para?)"}:::conditionalNode
       %% Abstracted Node 1
     wp_check_final_condition{"[(KeyWord/Num) OR Is Para a Poem?]"}:::conditionalNode
       %% Abstracted Node 2 (Represents final AND logic outcome)
@@ -114,9 +117,16 @@ graph TD;
     %% If English, fails condition
     wp_check_is_english -- "yes" --> wp_terminal_does_not_meet_condition
     %% If not English, check the combined Word/Number condition
-    wp_check_is_english -- "no" --> wp_check_word_or_num
+    wp_check_is_english -- "no" --> wp_check_word
+    wp_check_is_english -- "no" --> wp_check_num
+    %% wp_check_is_english -- "no" --> wp_check_word_or_num
     wp_check_is_english -- "__error__" --> wp_error_handler_complex
       %% Error from initial check
+
+    wp_check_word --> wp_check_word_or_num
+    wp_check_word -- "__error__" --> wp_error_handler_complex
+    wp_check_num --> wp_check_word_or_num
+    wp_check_num -- "__error__" --> wp_error_handler_complex
 
     %% After checking Word OR Num, check the final combined condition (including Is Poem?)
     wp_check_word_or_num -- "yes" --> wp_check_final_condition
