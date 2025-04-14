@@ -99,10 +99,8 @@ graph TD;
     wp_check_num{"Number in Para?"}:::unconditionalNode
     wp_check_poem{"Is it a Poem?"}:::unconditionalNode
     wp_check_word_or_num{"OR"}:::conditionalNode
-    %% wp_check_word_or_num{"(KeyWord in Para?)<br/>OR<br/>(Number in Para?)"}:::conditionalNode
       %% Abstracted Node 1
     wp_check_final_condition{"OR"}:::conditionalNode
-    % wp_check_final_condition{"[(KeyWord/Num) OR Is Para a Poem?]"}:::conditionalNode
       %% Abstracted Node 2 (Represents final AND logic outcome)
     wp_terminal_meets_condition("Meets Condition<br/>(Terminal)"):::terminalNode
     wp_terminal_does_not_meet_condition("Does NOT Meet Condition<br/>(Terminal)"):::terminalNode
@@ -145,7 +143,6 @@ graph TD;
     wp_check_final_condition -- "no" --> wp_terminal_does_not_meet_condition
     wp_check_final_condition -- "__error__" --> wp_error_handler_complex
       %% Represent potential errors from underlying checks
-
 
     %% Class Definitions (Styling - Kept the same)
     classDef conditionalNode fill:#cfe2f3,stroke:#333,stroke-width:2px;
