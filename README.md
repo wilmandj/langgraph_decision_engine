@@ -153,11 +153,11 @@ config:
 ---
 graph TD;
     %% Node Definitions (Simplified Syntax with <br/> and Abstraction)
-    __start__("Start"):::startEndNode
-    wp_check_is_english{"Is English?<br/>(Conditional)"}:::conditionalNode
-    wp_check_word_or_num{"(Word in Para?)<br/>OR<br/>(Has Num?)"}:::conditionalNode
+    __start__("Start - Paragraph"):::startEndNode
+    wp_check_is_english{"Is in English?<br/>(Conditional)"}:::conditionalNode
+    wp_check_word_or_num{"(KeyWord in Para?)<br/>OR<br/>(Number in Para?)"}:::conditionalNode
       %% Abstracted Node 1
-    wp_check_final_condition{"[(Word/Num) OR Poem?]<br/>AND<br/>[Is NOT English]"}:::conditionalNode
+    wp_check_final_condition{"[(Word/Num) OR Is Paragraph a Poem?]<br/>AND<br/>[Is NOT English]"}:::conditionalNode
       %% Abstracted Node 2 (Represents final AND logic outcome)
     wp_terminal_meets_condition("Meets Condition<br/>(Terminal)"):::terminalNode
     wp_terminal_does_not_meet_condition("Does NOT Meet Condition<br/>(Terminal)"):::terminalNode
