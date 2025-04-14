@@ -92,18 +92,20 @@ config:
     curve: linear
 ---
 graph TD;
-    __start__(("Start")):::startEndNode
-    wp_check_is_english{"wp_check_is_english\n(Conditional)"}:::conditionalNode
-    wp_llm_check_word_in_para{"wp_llm_check_word_in_para\n(LLM Decision)"}:::llmNode
-    wp_check_number_in_para{"wp_check_number_in_para\n(Conditional)"}:::conditionalNode
-    wp_gate_word_or_number{[\"wp_gate_word_or_number\n(OR)"/]}:::gateNode
-    wp_llm_check_is_poem{"wp_llm_check_is_poem\n(LLM Decision)"}:::llmNode
-    wp_gate_or_and_poem{/"wp_gate_or_and_poem\n(AND)"\]}:::gateNode
-    wp_terminal_meets_condition(("wp_terminal_meets_condition\n(Terminal)")):::terminalNode
-    wp_terminal_does_not_meet_condition(("wp_terminal_does_not_meet_condition\n(Terminal)")):::terminalNode
-    wp_error_handler_complex{{"wp_error_handler_complex\n(Error Handler)"}}:::errorNode
-    __end__(("End")):::startEndNode
+    %% Node Definitions (Simplified Syntax)
+    __start__("Start"):::startEndNode
+    wp_check_is_english{"Is English?\n(Conditional)"}:::conditionalNode
+    wp_llm_check_word_in_para["Check Word\n(LLM)"]:::llmNode
+    wp_check_number_in_para{"Has Number?\n(Conditional)"}:::conditionalNode
+    wp_gate_word_or_number["Word OR Number?\n(OR Gate)"]:::gateNode
+    wp_llm_check_is_poem["Is Poem?\n(LLM)"]:::llmNode
+    wp_gate_or_and_poem["(Word/Num) AND Poem?\n(AND Gate)"]:::gateNode
+    wp_terminal_meets_condition("Meets Condition\n(Terminal)"):::terminalNode
+    wp_terminal_does_not_meet_condition("Does NOT Meet Condition\n(Terminal)"):::terminalNode
+    wp_error_handler_complex["Error Handler"]:::errorNode
+    __end__("End"):::startEndNode
 
+    %% Edges (Connections)
     __start__ --> wp_check_is_english;
     wp_error_handler_complex --> __end__;
     wp_terminal_does_not_meet_condition --> __end__;
@@ -127,6 +129,7 @@ graph TD;
     wp_gate_or_and_poem -- "no" --> wp_terminal_does_not_meet_condition;
     wp_gate_or_and_poem -- "__error__" --> wp_error_handler_complex;
 
+    %% Class Definitions (Styling - Kept the same)
     classDef conditionalNode fill:#cfe2f3,stroke:#333,stroke-width:2px;
     classDef llmNode fill:#d9d2e9,stroke:#333,stroke-width:2px,color:#000000;
     classDef gateNode fill:#fce5cd,stroke:#e69138,stroke-width:2px;
@@ -136,9 +139,10 @@ graph TD;
     classDef errorNode fill:#f4cccc,stroke:#cc0000,stroke-width:2px;
     classDef unknownNode fill:#eee,stroke:#333,stroke-width:1px;
     classDef startEndNode fill:#555,stroke:#333,stroke-width:2px,color:#fff;
+
 ```
 
-Equivalent low level langgraph graph:
+### Equivalent low level langgraph graph:
 
 ```mermaid
 ---
