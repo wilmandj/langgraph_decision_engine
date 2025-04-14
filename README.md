@@ -83,7 +83,34 @@ Configure your LLM connection using environment variables. You can set these glo
 * **`
 
 
-## Example Langgraph graph:
+## Example:
+
+### Use Case: Word/Poetry Analysis Graph (`build_word_poetry_graph`)
+
+This example graph demonstrates a more complex decision-making workflow designed to analyze text paragraphs based on multiple criteria, combining rule-based logic with LLM analysis and logical gates.
+
+**Goal:**
+
+The primary goal of this graph is to identify and filter paragraphs that meet a specific set of conditions:
+
+1.  The paragraph must **not** be written in English.
+2.  The paragraph **must** be classified as having a poetic style.
+3.  The paragraph must contain **either**:
+    * At least one numerical digit, **OR**
+    * A translated version of one of the predefined English seed words (e.g., "sky", "ocean", "tree", "fire", "stone").
+
+**Process & Features Demonstrated:**
+
+* **Input:** Takes a paragraph's text, its specified language (e.g., 'en', 'de', 'fr', 'es'), and a list of seed words as input via the `DecisionState`.
+* **Mixed Logic:** It showcases the engine's ability to integrate different types of checks:
+    * **Rule-Based:** Determines the language (`Is English?`) and presence of numbers (`Has Number?`) using direct Python functions.
+    * **LLM-Based:** Leverages an LLM (via Tool Calling) to perform nuanced analysis for identifying poetry (`Is Poem?`) and checking for the presence of potentially translated seed words (`Word in Para?`).
+* **Logical Combination:** Implements the composite condition `(Word in Paragraph OR Number in Paragraph) AND (Is Poem) AND NOT (Is English)` using LangGraph's routing and the engine's logic gate nodes (which are abstracted in the accompanying visualization for clarity).
+* **Output:** Results in a binary outcome (`final_outcome`), indicating whether the paragraph meets the full set of criteria or not.
+
+This workflow exemplifies how the framework can be used to build sophisticated classification or filtering pipelines for text data based on a combination of linguistic style, content, and metadata.
+
+### Langgraph graph:
 
 ```mermaid
 ---
@@ -100,7 +127,7 @@ graph TD;
     wp_check_poem{"Is it a Poem?"}:::unconditionalNode
     wp_check_word_or_num{"OR"}:::conditionalNode
       %% Abstracted Node 1
-    wp_check_final_condition{"OR"}:::conditionalNode
+    wp_check_final_condition{"AND"}:::conditionalNode
       %% Abstracted Node 2 (Represents final AND logic outcome)
     wp_terminal_meets_condition("Meets Condition<br/>(Terminal)"):::terminalNode
     wp_terminal_does_not_meet_condition("Does NOT Meet Condition<br/>(Terminal)"):::terminalNode
@@ -129,7 +156,7 @@ graph TD;
     wp_check_num -- "__error__" --> wp_error_handler_complex
 
     %% After checking Word OR Num, check the final combined condition (including Is Poem?)
-    wp_check_word_or_num --> wp_check_final_condition
+    wp_check_word_or_num -- "yes/no" --> wp_check_final_condition
     wp_check_word_or_num -- "__error__" --> wp_error_handler_complex
       %% Represent potential errors from underlying checks
 
@@ -153,3 +180,4 @@ graph TD;
     classDef unknownNode fill:#eee,stroke:#333,stroke-width:1px;
     classDef startEndNode fill:#555,stroke:#333,stroke-width:2px,color:#fff;
 ```
+
