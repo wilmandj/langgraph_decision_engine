@@ -150,41 +150,54 @@ config:
     curve: linear
 ---
 graph TD;
-	__start__([<p>__start__</p>]):::first
-	wp_check_is_english(wp_check_is_english)
-	wp_llm_check_word_in_para(wp_llm_check_word_in_para)
-	wp_check_number_in_para(wp_check_number_in_para)
-	wp_gate_word_or_number(wp_gate_word_or_number)
-	wp_llm_check_is_poem(wp_llm_check_is_poem)
-	wp_gate_or_and_poem(wp_gate_or_and_poem)
-	wp_terminal_meets_condition(wp_terminal_meets_condition)
-	wp_terminal_does_not_meet_condition(wp_terminal_does_not_meet_condition)
-	wp_error_handler_complex(wp_error_handler_complex)
-	__end__([<p>__end__</p>]):::last
-	__start__ --> wp_check_is_english;
-	wp_error_handler_complex --> __end__;
-	wp_terminal_does_not_meet_condition --> __end__;
-	wp_terminal_meets_condition --> __end__;
-	wp_check_is_english -. &nbsp;yes&nbsp; .-> wp_terminal_does_not_meet_condition;
-	wp_check_is_english -. &nbsp;no&nbsp; .-> wp_llm_check_word_in_para;
-	wp_check_is_english -. &nbsp;__error__&nbsp; .-> wp_error_handler_complex;
-	wp_llm_check_word_in_para -. &nbsp;yes&nbsp; .-> wp_check_number_in_para;
-	wp_llm_check_word_in_para -. &nbsp;no&nbsp; .-> wp_check_number_in_para;
-	wp_llm_check_word_in_para -. &nbsp;__error__&nbsp; .-> wp_error_handler_complex;
-	wp_check_number_in_para -. &nbsp;yes&nbsp; .-> wp_gate_word_or_number;
-	wp_check_number_in_para -. &nbsp;no&nbsp; .-> wp_gate_word_or_number;
-	wp_check_number_in_para -. &nbsp;__error__&nbsp; .-> wp_error_handler_complex;
-	wp_gate_word_or_number -. &nbsp;yes&nbsp; .-> wp_llm_check_is_poem;
-	wp_gate_word_or_number -. &nbsp;no&nbsp; .-> wp_llm_check_is_poem;
-	wp_gate_word_or_number -. &nbsp;__error__&nbsp; .-> wp_error_handler_complex;
-	wp_llm_check_is_poem -. &nbsp;yes&nbsp; .-> wp_gate_or_and_poem;
-	wp_llm_check_is_poem -. &nbsp;no&nbsp; .-> wp_gate_or_and_poem;
-	wp_llm_check_is_poem -. &nbsp;__error__&nbsp; .-> wp_error_handler_complex;
-	wp_gate_or_and_poem -. &nbsp;yes&nbsp; .-> wp_terminal_meets_condition;
-	wp_gate_or_and_poem -. &nbsp;no&nbsp; .-> wp_terminal_does_not_meet_condition;
-	wp_gate_or_and_poem -. &nbsp;__error__&nbsp; .-> wp_error_handler_complex;
-	classDef default fill:#f2f0ff,line-height:1.2
-	classDef first fill-opacity:0
-	classDef last fill:#bfb6fc
+    %% Node Definitions (Simplified Syntax with <br/> and Abstraction)
+    __start__("Start"):::startEndNode
+    wp_check_is_english{"Is English?<br/>(Conditional)"}:::conditionalNode
+    wp_check_word_or_num{"(Word in Para?)<br/>OR<br/>(Has Num?)"}:::conditionalNode
+      %% Abstracted Node 1
+    wp_check_final_condition{"[(Word/Num) OR Poem?]<br/>AND<br/>[Is NOT English]"}:::conditionalNode
+      %% Abstracted Node 2 (Represents final AND logic outcome)
+    wp_terminal_meets_condition("Meets Condition<br/>(Terminal)"):::terminalNode
+    wp_terminal_does_not_meet_condition("Does NOT Meet Condition<br/>(Terminal)"):::terminalNode
+    wp_error_handler_complex["Error Handler"]:::errorNode
+    __end__("End"):::startEndNode
+
+    %% Edges (Connections - Manually Rerouted for Abstraction)
+    __start__ --> wp_check_is_english;
+
+    wp_error_handler_complex --> __end__;
+    wp_terminal_does_not_meet_condition --> __end__;
+    wp_terminal_meets_condition --> __end__;
+
+    %% If English, fails condition
+    wp_check_is_english -- "yes" --> wp_terminal_does_not_meet_condition;
+    %% If not English, check the combined Word/Number condition
+    wp_check_is_english -- "no" --> wp_check_word_or_num;
+    wp_check_is_english -- "__error__" --> wp_error_handler_complex;
+      %% Error from initial check
+
+    %% After checking Word OR Num, check the final combined condition (including Is Poem?)
+    wp_check_word_or_num -- "yes" --> wp_check_final_condition;
+    wp_check_word_or_num -- "no" --> wp_check_final_condition;
+    wp_check_word_or_num -- "__error__" --> wp_error_handler_complex;
+      %% Represent potential errors from underlying checks
+
+    %% Route based on the final abstracted condition result
+    wp_check_final_condition -- "yes" --> wp_terminal_meets_condition;
+    wp_check_final_condition -- "no" --> wp_terminal_does_not_meet_condition;
+    wp_check_final_condition -- "__error__" --> wp_error_handler_complex;
+      %% Represent potential errors from underlying checks
+
+
+    %% Class Definitions (Styling - Kept the same)
+    classDef conditionalNode fill:#cfe2f3,stroke:#333,stroke-width:2px;
+    classDef llmNode fill:#d9d2e9,stroke:#333,stroke-width:2px,color:#000000;
+    classDef gateNode fill:#fce5cd,stroke:#e69138,stroke-width:2px;
+    classDef terminalNode fill:#d9ead3,stroke:#6aa84f,stroke-width:2px;
+    classDef actionNode fill:#f3f3f3,stroke:#666,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef classificationNode fill:#d0e0e3,stroke:#45818e,stroke-width:2px;
+    classDef errorNode fill:#f4cccc,stroke:#cc0000,stroke-width:2px;
+    classDef unknownNode fill:#eee,stroke:#333,stroke-width:1px;
+    classDef startEndNode fill:#555,stroke:#333,stroke-width:2px,color:#fff;
 
 ```
