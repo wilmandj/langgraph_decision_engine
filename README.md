@@ -129,8 +129,6 @@ graph TD;
     wp_check_num -- "__error__" --> wp_error_handler_complex
 
     %% After checking Word OR Num, check the final combined condition (including Is Poem?)
-    % wp_check_word_or_num -- "yes" --> wp_check_final_condition
-    % wp_check_word_or_num -- "no" --> wp_check_final_condition
     wp_check_word_or_num --> wp_check_final_condition
     wp_check_word_or_num -- "__error__" --> wp_error_handler_complex
       %% Represent potential errors from underlying checks
