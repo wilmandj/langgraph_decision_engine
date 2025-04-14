@@ -92,42 +92,41 @@ config:
     curve: linear
 ---
 graph TD;
-    %% Node Definitions (Simplified Syntax)
+    %% Node Definitions (Simplified Syntax with <br/> and Abstraction)
     __start__("Start"):::startEndNode
-    wp_check_is_english{"Is English?\n(Conditional)"}:::conditionalNode
-    wp_llm_check_word_in_para["Check Word\n(LLM)"]:::llmNode
-    wp_check_number_in_para{"Has Number?\n(Conditional)"}:::conditionalNode
-    wp_gate_word_or_number["Word OR Number?\n(OR Gate)"]:::gateNode
-    wp_llm_check_is_poem["Is Poem?\n(LLM)"]:::llmNode
-    wp_gate_or_and_poem["(Word/Num) AND Poem?\n(AND Gate)"]:::gateNode
-    wp_terminal_meets_condition("Meets Condition\n(Terminal)"):::terminalNode
-    wp_terminal_does_not_meet_condition("Does NOT Meet Condition\n(Terminal)"):::terminalNode
+    wp_check_is_english{"Is English?<br/>(Conditional)"}:::conditionalNode
+    wp_check_word_or_num{"(Word in Para?)<br/>OR<br/>(Has Num?)"}:::conditionalNode %% Abstracted Node 1
+    wp_check_final_condition{"[(Word/Num) OR Poem?]<br/>AND<br/>[Is NOT English]"}:::conditionalNode %% Abstracted Node 2 (Represents final AND logic outcome)
+    wp_terminal_meets_condition("Meets Condition<br/>(Terminal)"):::terminalNode
+    wp_terminal_does_not_meet_condition("Does NOT Meet Condition<br/>(Terminal)"):::terminalNode
     wp_error_handler_complex["Error Handler"]:::errorNode
     __end__("End"):::startEndNode
 
-    %% Edges (Connections)
+    %% Edges (Connections - Manually Rerouted for Abstraction)
     __start__ --> wp_check_is_english;
+
     wp_error_handler_complex --> __end__;
     wp_terminal_does_not_meet_condition --> __end__;
     wp_terminal_meets_condition --> __end__;
+
+    % If English, fails condition
     wp_check_is_english -- "yes" --> wp_terminal_does_not_meet_condition;
-    wp_check_is_english -- "no" --> wp_llm_check_word_in_para;
-    wp_check_is_english -- "__error__" --> wp_error_handler_complex;
-    wp_llm_check_word_in_para -- "yes" --> wp_check_number_in_para;
-    wp_llm_check_word_in_para -- "no" --> wp_check_number_in_para;
-    wp_llm_check_word_in_para -- "__error__" --> wp_error_handler_complex;
-    wp_check_number_in_para -- "yes" --> wp_gate_word_or_number;
-    wp_check_number_in_para -- "no" --> wp_gate_word_or_number;
-    wp_check_number_in_para -- "__error__" --> wp_error_handler_complex;
-    wp_gate_word_or_number -- "yes" --> wp_llm_check_is_poem;
-    wp_gate_word_or_number -- "no" --> wp_llm_check_is_poem;
-    wp_gate_word_or_number -- "__error__" --> wp_error_handler_complex;
-    wp_llm_check_is_poem -- "yes" --> wp_gate_or_and_poem;
-    wp_llm_check_is_poem -- "no" --> wp_gate_or_and_poem;
-    wp_llm_check_is_poem -- "__error__" --> wp_error_handler_complex;
-    wp_gate_or_and_poem -- "yes" --> wp_terminal_meets_condition;
-    wp_gate_or_and_poem -- "no" --> wp_terminal_does_not_meet_condition;
-    wp_gate_or_and_poem -- "__error__" --> wp_error_handler_complex;
+    % If not English, check the combined Word/Number condition
+    wp_check_is_english -- "no" --> wp_check_word_or_num;
+    wp_check_is_english -- "__error__" --> wp_error_handler_complex; % Error from initial check
+
+    % After checking Word OR Num, check the final combined condition (including Is Poem?)
+    wp_check_word_or_num -- "yes" --> wp_check_final_condition;
+    wp_check_word_or_num -- "no" --> wp_check_final_condition;
+     % Represent potential errors from underlying checks leading to this abstracted node
+    wp_check_word_or_num -- "__error__" --> wp_error_handler_complex;
+
+    % Route based on the final abstracted condition result
+    wp_check_final_condition -- "yes" --> wp_terminal_meets_condition;
+    wp_check_final_condition -- "no" --> wp_terminal_does_not_meet_condition;
+     % Represent potential errors from underlying checks leading to this abstracted node
+    wp_check_final_condition -- "__error__" --> wp_error_handler_complex;
+
 
     %% Class Definitions (Styling - Kept the same)
     classDef conditionalNode fill:#cfe2f3,stroke:#333,stroke-width:2px;
