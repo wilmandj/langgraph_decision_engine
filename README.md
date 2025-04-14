@@ -123,9 +123,9 @@ graph TD;
     wp_check_is_english -- "__error__" --> wp_error_handler_complex
       %% Error from initial check
 
-    wp_check_word --> wp_check_word_or_num
+    wp_check_word -- "yes/no" --> wp_check_word_or_num
     wp_check_word -- "__error__" --> wp_error_handler_complex
-    wp_check_num --> wp_check_word_or_num
+    wp_check_num -- "yes/no" --> wp_check_word_or_num
     wp_check_num -- "__error__" --> wp_error_handler_complex
 
     %% After checking Word OR Num, check the final combined condition (including Is Poem?)
@@ -133,7 +133,7 @@ graph TD;
     wp_check_word_or_num -- "__error__" --> wp_error_handler_complex
       %% Represent potential errors from underlying checks
 
-    wp_check_poem --> wp_check_final_condition
+    wp_check_poem -- "yes/no" --> wp_check_final_condition
     wp_check_poem -- "__error__" --> wp_error_handler_complex
 
     %% Route based on the final abstracted condition result
